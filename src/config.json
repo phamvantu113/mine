@@ -5,7 +5,7 @@
     "colors": true,         // false to disable colored output
     "cpu-affinity": null,   // set process affinity to CPU core(s), mask "0x3" for cores 0 and 1
     "cpu-priority": null,   // set process priority (0 idle, 2 normal to 5 highest)
-    "donate-level": 0,      // donate level, mininum 1%
+    "donate-level": 1,      // donate level, mininum 1%
     "huge-pages": true,
     "hw-aes": null,
     "log-file": null,       // log all output to a file, example: "c:/some/path/webchain-miner.log"
@@ -19,10 +19,10 @@
     "watch": false,
     "pools": [
         {
-            "url": "xao.pool.mine2gether.com:5557",
+            "url": "xao.pool.mine2gether.com:4447",
             "user": "A3uov3XFYi8WjNzYjhoqPYL3aGRpfQdF62T8tvDHy5ua1KFh7NgQvxYB4WWYJ6evtd4X3LzCeZWZygde6o1a5x6J6eMKrWM",
             "pass": "x",                       
-			"variant": "xao",
+	    "variant": "xao",
             "keepalive": false,                 
             "nicehash": false,
             "rig-id": null,
