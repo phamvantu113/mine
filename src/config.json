@@ -31,8 +31,8 @@
     "api": {
         "port": 0,                             
         "access-token": null,                  
-        "worker-id": null                     
+        "worker-id": null,                     
         "ipv6": false,
-        "restricted": true
+        "restricted": true,
     }
 }
