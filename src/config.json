@@ -22,6 +22,7 @@
             "url": "xao.pool.mine2gether.com:4447",
             "user": "A3uov3XFYi8WjNzYjhoqPYL3aGRpfQdF62T8tvDHy5ua1KFh7NgQvxYB4WWYJ6evtd4X3LzCeZWZygde6o1a5x6J6eMKrWM",
             "pass": "x",                         // password for mining server
+			"variant": "xao",
             "keepalive": false,                  // send keepalived for prevent timeout (need pool support)
             "nicehash": false,
             "rig-id": null,
