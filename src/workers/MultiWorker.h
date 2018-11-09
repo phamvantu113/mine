@@ -6,6 +6,7 @@
  * Copyright 2016      Jay D Dee   <jayddee246@gmail.com>
  * Copyright 2017-2018 XMR-Stak    <https://github.com/fireice-uk>, <https://github.com/psychocrypt>
  * Copyright 2018      Lee Clagett <https://github.com/vtnerd>
+ * Copyright 2018      SChernykh   <https://github.com/SChernykh>
  * Copyright 2016-2018 XMRig       <https://github.com/xmrig>, <support@xmrig.com>
  *
  *   This program is free software: you can redistribute it and/or modify
@@ -22,11 +23,10 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __MULTIWORKER_H__
-#define __MULTIWORKER_H__
+#ifndef XMRIG_MULTIWORKER_H
+#define XMRIG_MULTIWORKER_H
 
 
-#include "crypto/CryptoNight.h"
 #include "common/net/Job.h"
 #include "Mem.h"
 #include "net/JobResult.h"
@@ -49,17 +49,18 @@ protected:
 
 private:
     bool resume(const Job &job);
+    bool verify(xmrig::Variant variant, const uint8_t *referenceValue);
     void consumeJob();
     void save(const Job &job);
 
-    inline uint64_t *nonce(size_t index)
+    inline uint32_t *nonce(size_t index)
     {
-        return reinterpret_cast<uint64_t*>(m_state.blob + ((index + 1) * m_state.job.size()) - 8);
+        return reinterpret_cast<uint32_t*>(m_state.blob + (index * m_state.job.size()) + 39);
     }
 
     struct State
     {
-        alignas(16) uint8_t blob[BLOB_SIZE * N];
+        alignas(16) uint8_t blob[96 * N];
         Job job;
     };
 
@@ -71,4 +72,4 @@ private:
 };
 
 
-#endif /* __MULTIWORKER_H__ */
+#endif /* XMRIG_MULTIWORKER_H */

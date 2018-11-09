@@ -21,26 +21,36 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __ICONTROLLERLISTENER_H__
-#define __ICONTROLLERLISTENER_H__
+#ifndef __ILOGBACKEND_H__
+#define __ILOGBACKEND_H__
 
 
-namespace xmrig {
+#include <stdarg.h>
+#include <stddef.h>
 
 
-class Config;
-
-
-class IControllerListener
+class ILogBackend
 {
 public:
-    virtual ~IControllerListener() {}
+    enum Level {
+        ERR,
+        WARNING,
+        NOTICE,
+        INFO,
+        DEBUG
+    };
 
-    virtual void onConfigChanged(Config *config, Config *previousConfig) = 0;
+#   ifdef APP_DEBUG
+    constexpr static const size_t kBufferSize = 1024;
+#   else
+    constexpr static const size_t kBufferSize = 512;
+#   endif
+
+    virtual ~ILogBackend() {}
+
+    virtual void message(Level level, const char* fmt, va_list args) = 0;
+    virtual void text(const char* fmt, va_list args)                 = 0;
 };
 
 
-} /* namespace xmrig */
-
-
-#endif // __ICONTROLLERLISTENER_H__
+#endif // __ILOGBACKEND_H__

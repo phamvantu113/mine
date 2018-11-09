@@ -6,7 +6,6 @@
  * Copyright 2016      Jay D Dee   <jayddee246@gmail.com>
  * Copyright 2017-2018 XMR-Stak    <https://github.com/fireice-uk>, <https://github.com/psychocrypt>
  * Copyright 2016-2018 XMRig       <https://github.com/xmrig>, <support@xmrig.com>
- * Copyright 2018      Webchain project
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -37,7 +36,7 @@ class JobResult
 {
 public:
     inline JobResult() : poolId(0), diff(0), nonce(0) {}
-    inline JobResult(int poolId, const xmrig::Id &jobId, uint64_t nonce, const uint8_t *result, uint32_t diff, const xmrig::Algorithm &algorithm) :
+    inline JobResult(int poolId, const xmrig::Id &jobId, uint32_t nonce, const uint8_t *result, uint32_t diff, const xmrig::Algorithm &algorithm) :
         poolId(poolId),
         diff(diff),
         nonce(nonce),
@@ -56,7 +55,7 @@ public:
 
     int poolId;
     uint32_t diff;
-    uint64_t nonce;
+    uint32_t nonce;
     uint8_t result[32];
     xmrig::Algorithm algorithm;
     xmrig::Id jobId;

@@ -21,34 +21,35 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-#include <string.h>
-
-
-#include "Cpu.h"
+#ifndef __BASICLOG_H__
+#define __BASICLOG_H__
 
 
-char Cpu::m_brand[64]      = { 0 };
-int Cpu::m_flags           = 0;
-int Cpu::m_l2_cache        = 0;
-int Cpu::m_l3_cache        = 0;
-int Cpu::m_sockets         = 1;
-int Cpu::m_totalCores      = 0;
-size_t Cpu::m_totalThreads = 0;
+#include <uv.h>
 
 
-size_t Cpu::optimalThreadsCount(size_t size, int maxCpuUsage)
-{
-    return m_totalThreads;
+#include "common/interfaces/ILogBackend.h"
+
+
+namespace xmrig {
+    class Controller;
 }
 
 
-void Cpu::initCommon()
+class BasicLog : public ILogBackend
 {
-    memcpy(m_brand, "Unknown", 7);
+public:
+    BasicLog();
 
-#   if defined(XMRIG_ARMv8)
-    m_flags |= X86_64;
-    m_flags |= AES;
-#   endif
-}
+    void message(Level level, const char *fmt, va_list args) override;
+    void text(const char *fmt, va_list args) override;
+
+private:
+    bool isWritable() const;
+    void print(va_list args);
+
+    char m_buf[kBufferSize];
+    char m_fmt[256];
+};
+
+#endif /* __BASICLOG_H__ */

@@ -7,7 +7,6 @@
  * Copyright 2017-2018 XMR-Stak    <https://github.com/fireice-uk>, <https://github.com/psychocrypt>
  * Copyright 2018      Lee Clagett <https://github.com/vtnerd>
  * Copyright 2016-2018 XMRig       <https://github.com/xmrig>, <support@xmrig.com>
- * Copyright 2018      Webchain project
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -23,22 +22,18 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __CRYPTONIGHT_H__
-#define __CRYPTONIGHT_H__
+#ifndef XMRIG_CRYPTONIGHT_H
+#define XMRIG_CRYPTONIGHT_H
 
 
 #include <stddef.h>
 #include <stdint.h>
-#include <uv.h>
-
-
-#define htonll(x) ((1==htonl(1)) ? (x) : ((uint64_t)htonl((x) & 0xFFFFFFFF) << 32) | htonl((x) >> 32))
 
 
 struct cryptonight_ctx {
-    alignas(16) uint8_t state[200];
-    alignas(16) uint8_t* memory;
+    alignas(16) uint8_t state[224];
+    alignas(16) uint8_t *memory;
 };
 
 
-#endif /* __CRYPTONIGHT_H__ */
+#endif /* XMRIG_CRYPTONIGHT_H */

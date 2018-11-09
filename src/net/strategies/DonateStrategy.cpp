@@ -6,7 +6,6 @@
  * Copyright 2016      Jay D Dee   <jayddee246@gmail.com>
  * Copyright 2017-2018 XMR-Stak    <https://github.com/fireice-uk>, <https://github.com/psychocrypt>
  * Copyright 2016-2018 XMRig       <https://github.com/xmrig>, <support@xmrig.com>
- * Copyright 2018      Webchain project
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -24,17 +23,14 @@
 
 
 #include "common/crypto/keccak.h"
+#include "common/interfaces/IStrategyListener.h"
 #include "common/net/Client.h"
 #include "common/net/Job.h"
 #include "common/net/strategies/FailoverStrategy.h"
 #include "common/net/strategies/SinglePoolStrategy.h"
 #include "common/Platform.h"
 #include "common/xmrig.h"
-#include "interfaces/IStrategyListener.h"
 #include "net/strategies/DonateStrategy.h"
-
-
-const static char *kDonatePool1   = "feepool.webchain.network";
 
 
 static inline float randomf(float min, float max) {
@@ -50,15 +46,19 @@ DonateStrategy::DonateStrategy(int level, const char *user, xmrig::Algo algo, IS
     m_listener(listener)
 {
     uint8_t hash[200];
-    char userId[43] = { '0', 'x', 0 };
+    char userId[65] = { 0 };
 
     xmrig::keccak(reinterpret_cast<const uint8_t *>(user), strlen(user), hash);
-    Job::toHex(hash, 20, userId+2);
+    Job::toHex(hash, 32, userId);
 
-    m_pools.push_back(Pool(kDonatePool1, 3333, userId, nullptr, false, false));
+#   ifndef XMRIG_NO_TLS
+    m_pools.push_back(Pool("donate.ssl.xmrig.com", 443, userId, nullptr, false, true, true));
+#   endif
+
+    m_pools.push_back(Pool("donate.v2.xmrig.com", 3333, userId, nullptr, false, true));
 
     for (Pool &pool : m_pools) {
-        pool.adjust(algo);
+        pool.adjust(xmrig::Algorithm(algo, xmrig::VARIANT_AUTO));
     }
 
     if (m_pools.size() > 1) {

@@ -4,8 +4,8 @@
  * Copyright 2014      Lucas Jones <https://github.com/lucasjones>
  * Copyright 2014-2016 Wolf9466    <https://github.com/OhGodAPet>
  * Copyright 2016      Jay D Dee   <jayddee246@gmail.com>
- * Copyright 2016-2017 XMRig       <support@xmrig.com>
- *
+ * Copyright 2017-2018 XMR-Stak    <https://github.com/fireice-uk>, <https://github.com/psychocrypt>
+ * Copyright 2016-2018 XMRig       <https://github.com/xmrig>, <support@xmrig.com>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -21,21 +21,27 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
-#include <windows.h>
-
-
-#include "Cpu.h"
+#ifndef XMRIG_TIMESTAMP_H
+#define XMRIG_TIMESTAMP_H
 
 
-void Cpu::init()
+#include <chrono>
+
+
+namespace xmrig {
+
+
+static inline int64_t currentMSecsSinceEpoch()
 {
-#   ifdef XMRIG_NO_LIBCPUID
-    SYSTEM_INFO sysinfo;
-    GetSystemInfo(&sysinfo);
+    using namespace std::chrono;
+    if (high_resolution_clock::is_steady) {
+        return time_point_cast<milliseconds>(high_resolution_clock::now()).time_since_epoch().count();
+    }
 
-    m_totalThreads = sysinfo.dwNumberOfProcessors;
-#   endif
-
-    initCommon();
+    return time_point_cast<milliseconds>(steady_clock::now()).time_since_epoch().count();
 }
+
+
+} /* namespace xmrig */
+
+#endif /* XMRIG_TIMESTAMP_H */
